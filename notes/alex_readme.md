@@ -13,6 +13,7 @@ Chart note: `metric_vs_separation.png` uses `speed_drop`, the strongest brakes f
 - For scale: guessing the average for every WR gives an MAE of 0.344 yd, so the full model is about 5% better than knowing nothing.
 - Getting open is itself fairly stable: Spearman of weeks 1–4 separation with weeks 5–8 separation = 0.51, much higher than any speed feature (top speed 0.24, speed_drop 0.23, peak_decel 0.18).
 - The result depends on the model: with the linear RidgeCV fallback the full model was 2.8% *worse* (wins 7 of 25 folds). TabPFN can use non-linear patterns that a linear model can't, which is where the small gain comes from. The linear BayesianRidge effects are the same under both.
+- Robustness (TabPFN): with separation averaged over the 0.5 s up to the measurement frame (2.0–2.5 s after the snap, or ending at the throw) instead of a single frame, the full model is 3.1% better than baseline (MAE 0.323 vs. 0.334 yd, 16 of 25 folds) and 7.4% better than guessing the average, the same picture as the headline. The two separation measures agree almost perfectly across players (Spearman 0.97), so single-frame noise is not what limits accuracy.
 - Man vs. zone (optional, run with RidgeCV): against man, nothing predicts separation (all effects ≈ 0); against zone, the full model ties the baseline (+0.9%, wins 72% of folds) with speed_drop the largest effect (+0.05 yd per SD, interval crosses 0). A hint, not a finding.
 
 ## Deviations from the framework
