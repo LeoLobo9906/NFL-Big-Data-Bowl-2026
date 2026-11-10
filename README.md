@@ -23,6 +23,7 @@ Each pair has nearly the same top speed but very different braking. The hard bra
 - **Players:** WRs only (106), with at least 20 routes in weeks 1–4 and 20 in weeks 5–8; pass plays only (complete, incomplete, intercepted).
 - **Features (weeks 1–4):** `top_speed` (90th percentile of per-route max speed); gas: `speed_1s`, `peak_accel_1s` (medians); brakes: `peak_decel`, `speed_drop` (90th percentiles, because 69% of routes are cut short by the throw, a median measured how often a WR breaks, not how hard; this choice was made after a first look at results; see below).
 - **Target (weeks 5–8):** `avg_separation`, mean yards to the nearest defender at 2.5 s after the snap or at the throw.
+- **Robustness:** the result holds when separation is averaged over 2.0–2.5 s instead of one frame (3.1% better, 16 of 25 folds); the two measures agree almost perfectly across players (Spearman 0.97).
 - **Model:** `TabPFNRegressor()` for both feature sets. Cross-validated R² is below zero for both (guessing the average gives MAE 0.344 yd), so speed features alone explain little of who gets open.
 - **The small gain depends on the model, so we report every version we ran:**
 
