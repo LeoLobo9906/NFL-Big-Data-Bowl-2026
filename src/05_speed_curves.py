@@ -75,7 +75,7 @@ def main():
             p = by_name.loc[name]
             curve = c[c["nfl_id"] == p["nfl_id"]]
             ax.plot(curve["t"], curve["mean_speed"], color=color, lw=2, ls=style,
-                    label=f"{name}\ntop {p.top_speed:.1f} yd/s · brake {p.peak_decel:.1f} yd/s²"
+                    label=f"{name}\ntop {p.top_speed:.1f} yd/s · decel {p.peak_decel:.1f} yd/s²"
                           f"\nweeks 5–8 separation {p.avg_separation:.1f} yd")
             if name == hard:
                 t0, t1, size = dip(curve)
@@ -102,7 +102,7 @@ def main():
     fig.suptitle("Same top speed, different brakes: hard brakers visibly slow at the break,\n"
                  "but braking alone doesn't decide who gets open in weeks 5–8", fontsize=13, color=INK, x=0.02,
                  ha="left")
-    fig.text(0.02, 0.01, "Brake = 90th-percentile peak deceleration in the first 3 s. Shaded: the hard braker's "
+    fig.text(0.02, 0.01, "Decel = 90th-percentile peak deceleration in the first 3 s. Shaded: the hard braker's "
              "biggest speed dip. 2021 NFL tracking, weeks 1–4.", fontsize=8, color=MUTED)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
