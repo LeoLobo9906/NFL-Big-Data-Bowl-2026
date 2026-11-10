@@ -4,7 +4,9 @@
 From NFL tracking data we built a per-route speed curve for every wide receiver route on pass plays, summarized each WR's gas (speed and peak acceleration in the first second) and brakes (hardest deceleration and biggest speed drop in the first 3 s) over weeks 1–4, and predicted his average separation in weeks 5–8 with the same model with and without those features, using 5-fold cross-validation across players repeated 5 times.
 
 ## Result (one sentence)
-Top speed is enough: adding gas and brakes did not improve the prediction of future separation (mean MAE 0.332 yd with top speed alone vs. 0.341 yd with gas and brakes, 2.8% worse, full model better in only 28% of 25 folds), and top speed was the only feature whose effect was clearly above zero (+0.07 yd per SD).
+Top speed is enough, and neither predicts much: adding gas and brakes did not improve the prediction of future separation (mean MAE 0.332 yd with top speed alone vs. 0.341 yd with gas and brakes, 2.8% worse, full model better in only 28% of 25 folds; cross-validated R² below 0 for both), and top speed was the only feature whose effect was clearly above zero (+0.07 yd per SD).
+
+Chart note: `metric_vs_separation.png` uses `speed_drop`, the strongest brakes feature (Spearman 0.23 with weeks 5–8 separation) and nearly unrelated to top speed (Spearman −0.06), so it asks "is braking a different skill from speed?"
 
 ## Supporting numbers
 - 106 WRs with 20+ routes in both weeks 1–4 and weeks 5–8 (34,478 WR/TE/RB routes built from all 122 games).
