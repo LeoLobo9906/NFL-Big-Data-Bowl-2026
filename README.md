@@ -51,3 +51,4 @@ Each pair has nearly the same top speed but very different braking. The hard bra
    python src/05_speed_curves.py
    python src/06_ngs_check.py   # optional: downloads public NGS data from nflverse
    ```
+   If `06` fails with an SSL certificate error (common with python.org Python on macOS), download the file first: `curl -L -o data/raw/ngs_2021_receiving.csv.gz https://github.com/nflverse/nflverse-data/releases/download/nextgen_stats/ngs_2021_receiving.csv.gz`
