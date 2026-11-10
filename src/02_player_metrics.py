@@ -12,7 +12,9 @@ import pandas as pd
 
 POSITIONS = ["WR"]   # agreed with Leo: 106 WRs qualify, so WRs only (no position one-hot)
 MIN_ROUTES = 20      # per week half
-FEATURES = ["speed_1s", "peak_accel_1s", "peak_decel", "speed_drop"]
+GAS = ["speed_1s", "peak_accel_1s"]
+BRAKES = ["peak_decel", "speed_drop"]
+FEATURES = GAS + BRAKES
 OUT = "outputs/tables"
 
 COLUMNS = ["nfl_id", "player_name", "position", "n_routes_w1_4", "n_routes_w5_8", "top_speed",
@@ -32,7 +34,10 @@ def main():
     m["n_routes_w1_4"] = ge.size()
     m["n_routes_w5_8"] = gl.size()
     m["top_speed"] = ge["route_top_speed"].quantile(0.9)
-    m[FEATURES] = ge[FEATURES].median()
+    # Gas: median (every route starts with a burst). Brakes: 90th percentile, like top_speed,
+    # because 69% of windows are cut at the throw, so a median measures how often a WR breaks, not how hard.
+    m[GAS] = ge[GAS].median()
+    m[BRAKES] = ge[BRAKES].quantile(0.9)
     # share of routes (with a brakes value) that drop more than 2 yd/s
     m["share_break_routes"] = ge["speed_drop"].apply(lambda s: (s.dropna() > 2).mean())
     m["sep_w1_4"] = ge["separation"].mean()
