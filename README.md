@@ -2,7 +2,7 @@
 
 Leonardo Villalobos & Alex Oh · NFL Big Data Bowl NYU Edition (2021 season, weeks 1–8)
 
-**What we built:** a **Brake Score** for NFL wide receivers, which measures how much speed a receiver drops when he cuts at the break, built from 2021 player tracking for 106 receivers in weeks 1–4, alongside his top speed and his burst off the line. 
+**What we built:** a **Brake Score** for NFL wide receivers, which measures how much speed a receiver drops when he cuts at the break, built from 2021 player tracking for 106 receivers in weeks 1–4, alongside his top speed and his burst off the line, and tested with a TabPFN machine-learning model whether these predict how open a receiver gets later in the season. 
 **What it reveals:** braking is a different trait from top speed (fast receivers are no more likely to brake hard), and adding braking and burst to top speed made our predictions of how open a receiver gets later in the season slightly better on our own measure (2.6% less error) and clearly better on the NFL's official Next Gen Stats separation for weeks 9–18, games our model never saw (9.1% less error, better in 21 of 25 test splits). The best single predictor, though, is how open a receiver got early in the season, so getting open is a lasting skill that speed numbers only partly capture, and braking seems to help most against zone coverage, where a receiver can stop and sit in the hole between defenders. 
 **Who would use it:** scouts and coaches can look at a receiver's Brake Score next to his top speed and his past separation when projecting who will get open. 
 **Limitations:** the Brake Score is closely tied to how many breaking routes (curls, comebacks, outs) a receiver is asked to run (correlation 0.90), so it partly reflects his role in the offense, not just his skill, and the data has no route labels to separate the two; it is also one season and about 100 receivers.
@@ -15,6 +15,20 @@ Leonardo Villalobos & Alex Oh · NFL Big Data Bowl NYU Edition (2021 season, wee
 - **Brake Score (brakes):** how much speed he drops when he cuts, on his hardest-breaking routes.
 - **Error (MAE):** how far off our prediction of a receiver's separation is, on average, in yards. Lower is better.
 - **Test splits (folds):** we hide some receivers, train on the rest, and predict the hidden ones; repeating this 25 times shows whether a result is consistent.
+
+## Models and accuracy at a glance
+
+We predicted each receiver's later separation from his weeks 1–4 movement with the same model (TabPFN), once with top speed only and once with top speed plus gas and brakes, and tested both on 25 repeated splits where the model never sees the receivers it predicts.
+
+| Test | Error, top speed only | Error, + gas & brakes | Improvement | Splits won |
+|---|---|---|---|---|
+| Our separation, weeks 5–8 (106 WRs) | 0.335 yd | 0.326 yd | 2.6% | 16 of 25 |
+| Official NFL Next Gen Stats separation, weeks 9–18 (67 WRs) | 0.460 yd | 0.418 yd | 9.1% | 21 of 25 |
+
+- **Fair comparison:** same model and same splits; only the features change.
+- **No peeking ahead:** features come from weeks 1–4, and the targets come from later weeks.
+- **Checked with a simpler linear model too:** the gain disappears on our own measure (2.8% worse) but holds on the official data (8.1% better); details in Methods.
+- **Runs end to end:** a fresh clone runs `src/01`–`07` without errors.
 
 ## Same top speed, different brakes
 
