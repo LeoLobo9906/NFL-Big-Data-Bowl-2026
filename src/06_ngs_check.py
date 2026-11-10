@@ -38,7 +38,12 @@ def norm(name):
 def main():
     if not os.path.exists(NGS_PATH):
         print(f"Downloading {NGS_URL}")
-        urllib.request.urlretrieve(NGS_URL, NGS_PATH)
+        try:
+            urllib.request.urlretrieve(NGS_URL, NGS_PATH)
+        except Exception as e:  # e.g. SSL certificate error on python.org Python for macOS
+            print(f"Download failed ({type(e).__name__}). Run this from the repo root, then rerun:\n"
+                  f"  curl -L -o {NGS_PATH} {NGS_URL}")
+            raise SystemExit(1)
     ngs = pd.read_csv(NGS_PATH)
     ngs = ngs[(ngs["season_type"] == "REG") & ngs["week"].between(9, 18)].copy()
     ngs["key"] = ngs["player_display_name"].map(norm)
