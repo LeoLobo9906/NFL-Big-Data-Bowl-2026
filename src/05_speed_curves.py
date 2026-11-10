@@ -100,7 +100,7 @@ def main():
 
     axes[0].set_ylabel("Mean speed, weeks 1–4 routes (yd/s)", color=INK)
     fig.suptitle("Same top speed, different brakes: hard brakers visibly slow at the break,\n"
-                 "but braking didn't predict who got open in weeks 5–8", fontsize=13, color=INK, x=0.02,
+                 "but braking alone doesn't decide who gets open in weeks 5–8", fontsize=13, color=INK, x=0.02,
                  ha="left")
     fig.text(0.02, 0.01, "Brake = 90th-percentile peak deceleration in the first 3 s. Shaded: the hard braker's "
              "biggest speed dip. 2021 NFL tracking, weeks 1–4.", fontsize=8, color=MUTED)
