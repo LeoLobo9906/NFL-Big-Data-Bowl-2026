@@ -15,7 +15,9 @@ import pandas as pd
 
 TABLES = "outputs/tables"
 FIGS = "outputs/figures"
-FEATURE = "speed_drop"   # strongest gas/brakes feature (Spearman with avg_separation); confirm with Leo
+FEATURE = "speed_drop"   # strongest brakes feature (Spearman 0.23 with avg_separation); confirmed with Leo
+LABEL_PLAYERS = ["Cooper Kupp", "Darius Slayton", "Rondale Moore"]
+LABEL_OFFSETS = {"Darius Slayton": (0, -18, "center"), "Jarvis Landry": (-4, 8, "right")}  # avoid overlaps
 FEATURE_LABEL = {"speed_drop": "Biggest speed drop in first 3 s, 90th pct route (yd/s)",
                  "peak_decel": "Hardest deceleration in first 3 s, 90th pct route (yd/s²)"}
 
@@ -76,16 +78,19 @@ def metric_vs_separation():
     xs = np.linspace(x.min(), x.max(), 50)
     ax.plot(xs, icpt + slope * xs, color=INK2, lw=2, ls="--", zorder=1, label="Linear trend")
 
-    # standouts: most / least open, hardest / softest braker
-    picks = [y.idxmax(), y.idxmin(), x.idxmax(), x.idxmin()]
-    for i in dict.fromkeys(picks):
-        ax.annotate(m.loc[i, "player_name"], (x[i], y[i]), xytext=(6, 6), textcoords="offset points",
-                    fontsize=11, color=INK)
+    # Leo's picks first, then hardest braker and least open; at most 5 labels
+    named = [m.index[m["player_name"] == n][0] for n in LABEL_PLAYERS if (m["player_name"] == n).any()]
+    picks = list(dict.fromkeys(named + [y.idxmax(), x.idxmax(), y.idxmin()]))[:5]
+    for i in picks:
+        name = m.loc[i, "player_name"]
+        dx, dy, ha = LABEL_OFFSETS.get(name, (6, 6, "left"))
+        ax.annotate(name, (x[i], y[i]), xytext=(dx, dy), textcoords="offset points",
+                    fontsize=11, color=INK, ha=ha)
         ax.scatter(x[i], y[i], s=48, facecolor="none", edgecolor=INK, lw=1.5, zorder=3)
 
     ax.set_xlabel(f"Weeks 1–4: {FEATURE_LABEL.get(FEATURE, FEATURE)}")
     ax.set_ylabel("Weeks 5–8: avg separation (yards)")
-    ax.set_title(f"Harder brakers get only slightly more open later (Spearman {rho:.2f})\n"
+    ax.set_title(f"Speed drop at the break barely predicts later separation (Spearman {rho:.2f})\n"
                  f"{len(m)} WRs; each dot is one receiver")
     ax.legend(loc="upper left", frameon=False)
     fig.tight_layout()
