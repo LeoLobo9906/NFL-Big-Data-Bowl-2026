@@ -3,8 +3,8 @@
 Leonardo Villalobos & Alex Oh · NFL Big Data Bowl NYU Edition (2021 season, weeks 1–8)
 
 **What we built:** a **Brake Score** for NFL wide receivers, which measures how much speed a receiver drops when he cuts at the break, built from 2021 player tracking for 106 receivers in weeks 1–4, alongside his top speed and his burst off the line, and tested with a TabPFN machine-learning model whether these predict how open a receiver gets later in the season. 
-**What it reveals:** braking is a different trait from top speed (fast receivers are no more likely to brake hard), and adding braking and burst to top speed made our predictions of how open a receiver gets later in the season slightly better on our own measure (2.6% less error) and clearly better on the NFL's official Next Gen Stats separation for weeks 9–18, games our model never saw (9.1% less error, better in 21 of 25 test splits). The best single predictor, though, is how open a receiver got early in the season, so getting open is a lasting skill that speed numbers only partly capture, and braking seems to help most against zone coverage, where a receiver can stop and sit in the hole between defenders. 
-**Who would use it:** scouts and coaches can look at a receiver's Brake Score next to his top speed and his past separation when projecting who will get open. 
+**What it reveals:** adding braking and burst to top speed cut the error in predicting the NFL's official Next Gen Stats separation for weeks 9–18, games our model never saw, by 9.1% (better in 21 of 25 test splits), and by 2.6% on our own weeks 5–8 measure, while braking turned out to be a different trait from top speed (fast receivers are no more likely to brake hard). The best single predictor, though, is how open a receiver got early in the season, so getting open is a lasting skill that speed numbers only partly capture, and braking seems to help most against zone coverage, where a receiver can stop and sit in the hole between defenders. 
+**Who would use it:** scouts can look at a receiver's Brake Score next to his top speed and his past separation when projecting who will get open, and coaches can see that against zone, routes with a hard break got the same receiver about 0.4 yd more space than his other routes. 
 **Limitations:** the Brake Score is closely tied to how many breaking routes (curls, comebacks, outs) a receiver is asked to run (correlation 0.90), so it partly reflects his role in the offense, not just his skill, and the data has no route labels to separate the two; it is also one season and about 100 receivers.
 
 **Terms used here**
@@ -39,6 +39,8 @@ Each pair runs almost the same top speed but brakes very differently. The hard b
 ## Does adding gas and brakes beat top speed?
 
 ![Model comparison](outputs/figures/model_comparison.png)
+
+On our own weeks 5–8 measure the gain is small (2.6%); on the NFL's official separation for weeks 9–18 it is larger (9.1%, 21 of 25 splits). See "Models and accuracy at a glance" above.
 
 ## Brake Score (speed drop) in weeks 1–4 vs. separation in weeks 5–8
 
@@ -86,7 +88,7 @@ The hardest brakers are mostly not burners: 7 of the 10 are at or below the medi
 ## How to run
 
 1. Download the event data from [nfl-big-data-bowl-regional-event-data](https://github.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data) into `data/raw/` (so `data/raw/games.csv`, `data/raw/tracking/…`).
-2. `pip install -r requirements.txt`, plus `pip install tabpfn` and a Prior Labs API key in the `TABPFN_TOKEN` environment variable (without it, `03_models.py` falls back to RidgeCV and gives the RidgeCV rows above).
+2. `pip install -r requirements.txt` (includes `tabpfn`), plus a Prior Labs API key in the `TABPFN_TOKEN` environment variable (without it, `03_models.py` falls back to RidgeCV and gives the RidgeCV rows above).
 3. From the repo root, run in order:
    ```
    python src/01_build_routes.py
