@@ -2,7 +2,7 @@
 
 Leonardo Villalobos & Alex Oh · NFL Big Data Bowl NYU Edition (2021 season, weeks 1–8)
 
-**What we built:** a "gas and brakes" profile for 106 NFL wide receivers from 2021 player tracking, measuring how fast each one bursts off the line in the first second and how hard he brakes at the break, over every route in weeks 1–4. **What it reveals:** getting open is a stable skill that speed barely explains, since a receiver's early-season separation tracked his weeks 5–8 separation twice as well as his top speed did (Spearman 0.51 vs. 0.24), and adding gas and brakes to top speed cut prediction error by only 2.6% (0.326 vs. 0.335 yards, better in 16 of 25 cross-validation folds with TabPFN). Braking shows up most against zone, where a receiver's speed drop at the break ranks his later separation better than top speed (Spearman 0.31 vs. 0.16), which fits sitting down in a hole between defenders, though it is a hint rather than a proven effect. **Who would use it:** scouts and coaches projecting which receivers will get open should start from separation history and use braking alongside top speed, not top speed alone. **Limitations:** separation is measured to the nearest defender 2.5 s after the snap (or at the throw if earlier), braking depends on the routes a receiver is asked to run, and the sample is eight weeks of one season.
+**What we built:** a **Brake Score** for NFL wide receivers, how much speed a receiver sheds at the break (90th percentile of his biggest speed drop in the first 3 s after the snap), plus a burst measure, from 2021 player tracking for 106 WRs over weeks 1–4. **What it reveals:** braking is a separate skill from speed (Brake Score vs. top speed: Spearman −0.06), and adding braking and burst to top speed cut the error in predicting a receiver's weeks 5–8 separation by 2.6% (0.326 vs. 0.335 yards, better in 16 of 25 cross-validation folds with TabPFN), though his own early-season separation remained the best guide (Spearman 0.51 vs. 0.24 for top speed). The Brake Score may matter most against zone, where it ranks later separation better than top speed does (Spearman 0.31 vs. 0.16), which fits a receiver sitting down in a hole between defenders, but that effect is not yet clear of zero. **Who would use it:** scouts and coaches can rank receivers by Brake Score alongside top speed and separation history when projecting who will get open, because it captures something speed misses. **Limitations:** separation is measured to the nearest defender 2.5 s after the snap (or at the throw if earlier), braking depends on the routes a receiver is asked to run, and the sample is eight weeks of one season.
 
 ## Same top speed, different brakes
 
@@ -14,7 +14,7 @@ Each pair has nearly the same top speed but very different braking. The hard bra
 
 ![Model comparison](outputs/figures/model_comparison.png)
 
-## Brakes in weeks 1–4 vs. separation in weeks 5–8
+## Brake Score (speed drop) in weeks 1–4 vs. separation in weeks 5–8
 
 ![Metric vs separation](outputs/figures/metric_vs_separation.png)
 
