@@ -39,7 +39,8 @@ def model_comparison():
     mean = wide.mean()
     improve = (mean["baseline"] - mean["full"]) / mean["baseline"] * 100
     wins = int((wide["full"] < wide["baseline"]).sum())
-    verdict = "Gas & brakes help" if improve > 0 else "Top speed is enough"
+    verdict = ("Gas & brakes help" if improve >= 5 else "Gas & brakes help slightly") if improve > 0 \
+        else "Top speed is enough"
 
     fig, ax = plt.subplots(figsize=(8, 5))
     # one thin gray line per fold joins the two models' errors on the same split
@@ -57,7 +58,7 @@ def model_comparison():
     ax.set_xlim(-0.4, 1.6)
     ax.set_ylabel("Mean absolute error, weeks 5–8 separation (yards)")
     change = f"cuts error {improve:.1f}%" if improve > 0 else f"makes error {-improve:.1f}% worse"
-    ax.set_title(f"{verdict}: adding gas & brakes {change}\n"
+    ax.set_title(f"{verdict}: the full model {change}\n"
                  f"(full model better in {wins} of {len(wide)} folds; 106 WRs, 5×5 cross-validation)")
     ax.text(1.58, ax.get_ylim()[0], "dots = folds · bar = mean ± 1 SD", ha="right", va="bottom",
             color=INK2, fontsize=10)
